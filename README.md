@@ -42,4 +42,49 @@ O primeiro jogo em desenvolvimento é o **Jogo da Forca**, e futuramente será a
 
 ## 🧱 Estrutura inicial do projeto
 
---JardelDev
+python-web-games/
+│
+├── app/
+│ ├── static/ # CSS, JS, imagens
+│ ├── templates/ # Páginas HTML
+│ ├── games/
+│ │ ├── forca/ # Lógica e rotas do Jogo da Forca
+│ │ └── velha/ # (futuro) Lógica e rotas do Jogo da Velha
+│ ├── init.py
+│ └── main.py # Ponto de entrada da aplicação Flask/FastAPI
+│
+├── requirements.txt # Dependências do projeto
+├── README.md # Este arquivo
+└── .gitignore
+
+
+---
+
+## 🚀 Como rodar o projeto (em breve)
+
+Instruções completas de instalação e execução serão adicionadas assim que a primeira versão do Jogo da Forca estiver implementada.
+
+---
+
+## 🧾 Roadmap
+
+- [x] Criação da estrutura inicial e documentação  
+- [ ] Implementar o layout base (HTML + CSS)  
+- [ ] Desenvolver lógica do Jogo da Forca em Python  
+- [ ] Integrar interface web ao backend  
+- [ ] Adicionar opções de dificuldade  
+- [ ] Adicionar o Jogo da Velha  
+
+---
+
+## ✨ Autor
+
+**Jardel Junior**  
+Desenvolvedor em constante aprendizado, explorando Python e desenvolvimento web através de projetos práticos.  
+
+📂 GitHub: [github.com/jardeljj](https://github.com/jardeljj)
+
+---
+
+> Este projeto faz parte do portfólio pessoal de aprendizado e desenvolvimento em Python.
+
