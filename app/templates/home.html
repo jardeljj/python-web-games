@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Python Web Games{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="fw-bold">🎮 Python Web Games</h1>
+    <p class="text-muted">Coleção de jogos web desenvolvidos em Python</p>
+</div>
+
+<div class="row g-4">
+    <!-- Jogo da Forca -->
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">🪢 Jogo da Forca</h5>
+                <p class="card-text">
+                    Descubra a palavra antes de esgotar suas tentativas.
+                </p>
+                <a href="/forca" class="btn btn-primary">Jogar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jogo da Velha -->
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">❌⭕ Jogo da Velha</h5>
+                <p class="card-text">
+                    Em breve: jogue contra outro jogador ou contra o computador.
+                </p>
+                <a href="#" class="btn btn-secondary disabled">Em breve</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

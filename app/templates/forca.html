@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Jogo da Forca{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">🪢 Jogo da Forca</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+
+        <h4 class="mb-3">Palavra</h4>
+        <p class="fs-3 letter-spacing">
+            _ _ _ _ _
+        </p>
+
+        <p class="text-muted">
+            Tentativas restantes: <strong>6</strong>
+        </p>
+
+        <hr>
+
+        <p>Letras erradas:</p>
+        <p class="text-danger fw-bold">
+            A B C
+        </p>
+
+        <form class="mt-4">
+            <div class="mb-3">
+                <input
+                    type="text"
+                    class="form-control text-center"
+                    maxlength="1"
+                    placeholder="Digite uma letra"
+                >
+            </div>
+            <button class="btn btn-success">Enviar</button>
+            <button class="btn btn-outline-secondary ms-2">Reiniciar</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
