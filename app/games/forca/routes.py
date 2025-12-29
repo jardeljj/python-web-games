@@ -1,51 +1,53 @@
-from flask import Blueprint, render_template, request, jsonify
-from flask_caching import Cache
-from app.games.forca.logic import JogoDaForca
-from app.games.forca.words import PALAVRAS
-import uuid
+import random
+from flask import Blueprint, jsonify, request
 
-forca_bp = Blueprint("forca", __name__)
-cache = Cache(config={"CACHE_TYPE": "SimpleCache"})
+forca_bp = Blueprint("forca", __name__, url_prefix="/forca")
 
-@forca_bp.record_once
-def on_load(state):
-    cache.init_app(state.app)
+# Cache simples em memória (por usuário depois)
+jogo_cache = {}
 
-@forca_bp.route("/forca")
-def forca_page():
-    return render_template("forca.html")
+PALAVRAS = [
+    "PYTHON",
+    "JAVASCRIPT",
+    "FORCA",
+    "DESENVOLVIMENTO",
+    "PROGRAMACAO"
+]
 
-@forca_bp.route("/forca/start", methods=["POST"])
+@forca_bp.route("/start", methods=["GET"])
 def start_game():
-    game_id = str(uuid.uuid4())
-    jogo = JogoDaForca(PALAVRAS["medio"])
+    palavra = random.choice(PALAVRAS)
 
-    cache.set(game_id, jogo, timeout=3600)
+    jogo_cache["jogo"] = {
+        "palavra": palavra,
+        "palavra_mostrada": ["_"] * len(palavra),
+        "tentativas": 6,
+        "letras_erradas": [],
+        "letras_corretas": []
+    }
 
-    return jsonify({
-        "game_id": game_id,
-        "palavra": jogo.palavra_mostrada(),
-        "tentativas": jogo.tentativas_restantes(),
-        "letras_erradas": []
-    })
+    return jsonify(jogo_cache["jogo"])
 
-@forca_bp.route("/forca/guess", methods=["POST"])
-def guess():
-    data = request.json
-    game_id = data["game_id"]
-    letra = data["letra"]
 
-    jogo = cache.get(game_id)
-    if not jogo:
-        return jsonify({"error": "Jogo não encontrado"}), 404
+@forca_bp.route("/guess", methods=["POST"])
+def guess_letter():
+    data = request.get_json()
+    letra = data.get("letra", "").upper()
 
-    jogo.tentar_letra(letra)
-    cache.set(game_id, jogo)
+    jogo = jogo_cache.get("jogo")
+    if not jogo or not letra:
+        return jsonify(jogo), 400
 
-    return jsonify({
-        "palavra": jogo.palavra_mostrada(),
-        "tentativas": jogo.tentativas_restantes(),
-        "letras_erradas": list(jogo.letras_erradas),
-        "venceu": jogo.venceu(),
-        "perdeu": jogo.perdeu()
-    })
+    if letra in jogo["letras_corretas"] or letra in jogo["letras_erradas"]:
+        return jsonify(jogo)
+
+    if letra in jogo["palavra"]:
+        jogo["letras_corretas"].append(letra)
+        for i, l in enumerate(jogo["palavra"]):
+            if l == letra:
+                jogo["palavra_mostrada"][i] = letra
+    else:
+        jogo["letras_erradas"].append(letra)
+        jogo["tentativas"] -= 1
+
+    return jsonify(jogo)

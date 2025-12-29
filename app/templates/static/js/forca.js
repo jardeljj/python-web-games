@@ -5,26 +5,35 @@ function criarPalavraMostrada(palavra) {
 }
 
 async function iniciarJogo() {
-    const res = await fetch("/forca/start", { method: "POST" });
-    const data = await res.json();
+    const res = await fetch("/forca/start");
+    jogo = await res.json();
 
-    gameId = data.game_id;
-    atualizarTela(data);
+    document.getElementById("btn-enviar").disabled = false;
+    document.getElementById("letra").disabled = false;
+
+    setMensagem("");
+    atualizarTela();
 }
 
 async function enviarLetra() {
     const input = document.getElementById("letra");
-    const letra = input.value;
+    const letra = input.value.toUpperCase();
     input.value = "";
+
+    if (!letra) return;
 
     const res = await fetch("/forca/guess", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ game_id: gameId, letra })
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ letra })
     });
 
-    const data = await res.json();
-    atualizarTela(data);
+    jogo = await res.json();
+
+    verificarEstado();
+    atualizarTela();
 }
 
 function atualizarTela(data) {
