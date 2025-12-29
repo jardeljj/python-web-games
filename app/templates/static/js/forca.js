@@ -1,5 +1,9 @@
 let gameId = null;
 
+function criarPalavraMostrada(palavra) {
+    return Array(palavra.length).fill("_");
+}
+
 async function iniciarJogo() {
     const res = await fetch("/forca/start", { method: "POST" });
     const data = await res.json();
@@ -31,19 +35,13 @@ function atualizarTela(data) {
 // ===============================
 // Estado do jogo (temporário)
 // ===============================
-let jogo = {
-    palavra: "PYTHON",
-    palavraMostrada: ["_", "_", "_", "_", "_", "_"],
-    tentativas: 6,
-    letrasErradas: [],
-    letrasCorretas: []
-};
+let jogo = {};
 
 // ===============================
 // Inicialização
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-    atualizarTela();
+     iniciarJogo();
 
     document
         .getElementById("btn-enviar")
@@ -58,13 +56,26 @@ document.addEventListener("DOMContentLoaded", () => {
 // Funções principais
 // ===============================
 function iniciarJogo() {
+    const palavras = [
+        "PYTHON",
+        "JAVASCRIPT",
+        "FORCA",
+        "DESENVOLVIMENTO",
+        "PROGRAMACAO"
+    ];
+
+    const palavra = palavras[Math.floor(Math.random() * palavras.length)];
+
     jogo = {
-        palavra: "PYTHON", // depois vem do backend
-        palavraMostrada: ["_", "_", "_", "_", "_", "_"],
+        palavra: palavra,
+        palavraMostrada: criarPalavraMostrada(palavra),
         tentativas: 6,
         letrasErradas: [],
         letrasCorretas: []
     };
+
+    document.getElementById("btn-enviar").disabled = false;
+    document.getElementById("letra").disabled = false;
 
     setMensagem("");
     atualizarTela();
