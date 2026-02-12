@@ -1,7 +1,11 @@
 import random
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request,render_template
 
 forca_bp = Blueprint("forca", __name__, url_prefix="/forca")
+
+@forca_bp.route("/")
+def forca_page():
+    return render_template("forca.html")
 
 # Cache simples em memória (por usuário depois)
 jogo_cache = {}
